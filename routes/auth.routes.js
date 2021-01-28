@@ -6,6 +6,7 @@ const bcryptjs = require('bcryptjs');
 const saltRounds = 10;
 const User = require('../models/User.model');
 const mongoose = require('mongoose');
+const uploadMiddleware = require('./../middleware/file-upload');
 
 const routeGuard = require('../configs/route-guard.config');
 
@@ -17,7 +18,7 @@ const routeGuard = require('../configs/route-guard.config');
 router.get('/signup', (req, res) => res.render('auth/signup'));
 
 // .post() route ==> to process form data
-router.post('/signup', (req, res, next) => {
+router.post('/signup', uploadMiddleware.single('picture'), (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
