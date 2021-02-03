@@ -1,12 +1,5 @@
 const express = require('express');
 const router = new express.Router();
-
-const bcryptjs = require('bcryptjs');
-const saltRounds = 10;
-const User = require('../models/User.model');
-
-const mongoose = require('mongoose');
-
 const uploadMiddleware = require('./../middleware/file-upload');
 const routeGuard = require('../configs/route-guard.config');
 
