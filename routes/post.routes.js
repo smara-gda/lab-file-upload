@@ -20,17 +20,16 @@ router.get('/create-post', routeGuard, (req, res, next) => {
 // the POST route to actually create the post (this route should include file uploading),
 router.post('/create-post', routeGuard, uploadMiddleware.single('picPath'), (req, res, next) => {
   const data = req.body;
-  let image;
+  let picPath;
   if (req.file) {
-    image = req.file.path;
+    picPath = req.file.path;
   }
+  console.log(req.file);
   PostModel.create({
     content: data.content,
     picName: data.picName,
-    picPath: image,
-    /*creatorId does not get stored in dB, 
-       below does not seem to work but also does not stop me from creating a post*/
-    creatorId: req.session._id
+    creatorId: req.session.currentUser._id,
+    picPath
   })
     .then(post => {
       res.render('index', { post });

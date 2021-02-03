@@ -20,7 +20,10 @@ router.get('/signup', (req, res) => res.render('auth/signup'));
 // .post() route ==> to process form data
 router.post('/signup', uploadMiddleware.single('profilePicture'), (req, res, next) => {
   const { username, email, password } = req.body;
-  const profilePicture = req.file.path;
+  let profilePicture;
+  if (req.file) {
+    profilePicture = req.file.path;
+  }
   if (!username || !email || !password) {
     res.render('auth/signup', { errorMessage: 'All fields are mandatory. Please provide your username, email and password.' });
     return;
