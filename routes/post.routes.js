@@ -9,11 +9,12 @@ const mongoose = require('mongoose');
 
 const uploadMiddleware = require('./../middleware/file-upload');
 const routeGuard = require('../configs/route-guard.config');
-const postModel = require('../models/Post.model');
+
+const PostModel = require('../models/Post.model');
 
 // the GET route to display the post-form
 router.get('/create-post', routeGuard, (req, res, next) => {
-  res.render('users/new-post');
+  res.render('new-post');
 });
 
 // the POST route to actually create the post (this route should include file uploading),
@@ -23,15 +24,14 @@ router.post('/create-post', routeGuard, uploadMiddleware.single('picPath'), (req
   if (req.file) {
     image = req.file.path;
   }
-  postModel
-    .create({
-      content: data.content,
-      picName: data.picName,
-      picPath: image,
-      /*creatorId does not get stored in dB, 
+  PostModel.create({
+    content: data.content,
+    picName: data.picName,
+    picPath: image,
+    /*creatorId does not get stored in dB, 
        below does not seem to work but also does not stop me from creating a post*/
-      creatorId: req.session._id
-    })
+    creatorId: req.session._id
+  })
     .then(post => {
       res.render('index', { post });
     })
@@ -40,20 +40,30 @@ router.post('/create-post', routeGuard, uploadMiddleware.single('picPath'), (req
     });
 });
 
-// the GET route to display the posts and
+// the GET route to display the posts
 
 router.get('/posts', (req, res, next) => {
-  postModel
-    .find()
+  PostModel.find()
     .populate('creatorId')
-    .then(posts => {
-      console.log(posts);
-      res.render('posts', { posts });
+    .then(post => {
+      console.log(post);
+      res.render('posts', { post });
     })
     .catch(error => {
       next(error);
     });
 });
 // the GET route to display post-details.
+
+router.get('/post/:id', (req, res, next) => {
+  const id = req.params.id;
+  PostModel.findById(id)
+    .then(result => {
+      res.render('posts/single-post', { result });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
 
 module.exports = router;

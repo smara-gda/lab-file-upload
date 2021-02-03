@@ -23,7 +23,8 @@ form label {
 }
 
 form input,
-form button {
+form button,
+textarea {
   box-sizing: border-box;
   font-size: 14px;
   outline: 0;
