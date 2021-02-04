@@ -5,16 +5,16 @@
 </div>
 
 <button type="button" id="cmnt-button"> Comment on this</button>
-<form method="POST" action="/comments/create" enctype="multipart/form-data" class="hidden-form" id="hiddenForm">
+<form method="POST" action="/comments/create" enctype="multipart/form-data" class="hidden-form" id="hiddenForm" hidden>
   <h3>New comment</h3>
-  <label for="picName">Picture Name:</label>
-  <input type="text" id="picName" name="imageName">
+    <label for="content">Your comment</label>
+    <textarea id="content" name="content" placeholder="Write a comment" rows="8" cols="35"></textarea>
+    <label for="picName">Picture Name:</label>
+    <input type="text" id="picName" name="imageName">
 
-  <label for="picture">Picture</label>
-   <input type="file" id="picture" name="image">
+    <label for="picture">Picture</label>
+    <input type="file" id="picture" name="image">
 
-   <label for="content">Your comment</label>
-   <textarea id="content" name="content" placeholder="Write a comment" rows="8" cols="35"></textarea>
    <button type="submit">Submit comment</button>
 </form>
 
@@ -22,6 +22,10 @@
  const commentButton = document.getElementById('cmnt-button')
  commentButton.addEventListener('click', (event) =>{
    const commentForm = document.getElementById('hiddenForm');
-   commentForm.style.display = 'block';
+   const hidden = commentForm.style.display === 'none'
+   const block = commentForm.style.display === 'block'
+ 
+ block ? commentForm.style.display = 'none' : commentForm.style.display = 'block'
  })
+
 </script>
